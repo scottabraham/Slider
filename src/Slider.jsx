@@ -11,8 +11,8 @@ const SliderElement = styled.div`
   width: 10px;
   background-color: green;
   position: relative;
-  left: ${({ sliderVal, containerWidth, max }) => sliderVal && ((containerWidth/max)*sliderVal)}px;
-
+  left: ${({ sliderVal, containerWidth, max }) =>
+    sliderVal && (containerWidth / max) * sliderVal}px;
 `;
 
 const Slider = ({ min, max, steps }) => {
@@ -25,16 +25,21 @@ const Slider = ({ min, max, steps }) => {
   };
 
   const handleSliderMove = e => {
-    setSliderVal((max / containerWidth) * e);
+    setSliderVal(Math.max((max / containerWidth) * e), 0);
   };
 
   return (
     <Fragment>
       <SliderContainer
         ref={refCallback}
-        onClick={e => handleSliderMove(e.nativeEvent.clientX)}
+        onDragOver={e => handleSliderMove(e.nativeEvent.clientX)}
       >
-        <SliderElement sliderVal={sliderVal} containerWidth={containerWidth} max={max}/>
+        <SliderElement
+          draggable="true"
+          sliderVal={sliderVal}
+          containerWidth={containerWidth}
+          max={max}
+        />
       </SliderContainer>
       {sliderVal}
     </Fragment>
